@@ -10,20 +10,37 @@ subject.test<-fread('UCI HAR Dataset/test/subject_test.txt')  ## test subject id
 tstx<-fread('UCI HAR Dataset/test/X_test.txt',col.names=cn$V2)  ## read test data with variables
 tsty<-fread('UCI HAR Dataset/test/y_test.txt')  ## test label 
 
-#select features with 'mean' in it. 
+# read training data.
+subject.train<-fread('UCI HAR Dataset/train/subject_train.txt')  ## traiin subject ids (1 to 30)
+trnx<-fread('UCI HAR Dataset/train/X_train.txt',col.names=cn$V2)  ## read train data with variables
+trny<-fread('UCI HAR Dataset/train/y_train.txt')  ## train label 
+
+#select features with 'mean' in it.   test data
 tstx.final<-tstx[,grep("mean\\(\\)|std\\(\\)|gravityMean\\)",colnames(tstx)),with=FALSE]    ## list of mean() cols
- 
-# add activity and subject
-tstx.final[,`:=`(Activity=act.lbl[tsty$V1]$V2,Subject=subject.test$V1)]    
-table(tstx.final$Subject)
-table(tstx.final$Activity)
+
+#select features with 'mean' in it.   training data
+trnx.final<-trnx[,grep("mean\\(\\)|std\\(\\)|gravityMean\\)",colnames(trnx)),with=FALSE]    ## list of mean() cols
+
+# add activity and subject to test
+tstx.final[,`:=`(Activity=act.lbl[tsty$V1]$V2,Subject=subject.test$V1)] 
+
+# add activity and subject to training data
+trnx.final[,`:=`(Activity=act.lbl[trny$V1]$V2,Subject=subject.train$V1)]
+
+# merger both test and train into single data.table.
+master.data <- rbind(tstx.final,trnx.final)
+# quick check
+table(master.data$Subject)
+table(master.data$Activity)
 
 # add meaningful names to columns/features. 
-colnames(tstx.final)<-gsub('^t',"time",colnames(tstx.final))
+colnames(master.data)<-gsub('^t',"time",colnames(master.data))
+colnames(master.data)<-gsub('^f',"frequency",colnames(master.data))
 # find mean of all features by Activity and by Suject. 
-tidy.summ<-tstx.final%>%
+tidy.summary<-master.data%>%
   group_by(Activity,Subject)%>%
   summarize_all(mean)
 #print
-tidy.summ
+tidy.summary
 # write to a file.
+write.table(tidy.summary,file="tidysummary.txt",row.names = FALSE)
