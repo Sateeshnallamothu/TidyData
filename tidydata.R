@@ -1,6 +1,7 @@
 library(dplyr)
 library(data.table)
 setwd('TidyData')
+# make sure the inptu files are in the working directory. 
 
 #  assignment 3
 # read common files.
