@@ -1,4 +1,5 @@
 library(dplyr)
+library(data.table)
 setwd('TidyData')
 
 #  assignment 3
@@ -37,6 +38,7 @@ table(master.data$Activity)
 
 # add meaningful names to columns/features. 
 colnames(master.data)<-gsub('^t',"time",colnames(master.data))
+colnames(master.data)<-gsub('\\(t',"(time",colnames(master.data))
 colnames(master.data)<-gsub('^f',"frequency",colnames(master.data))
 
 # find mean of all features by Activity and by Suject. 
@@ -49,3 +51,6 @@ tidy.summary
 
 # write to a file.
 write.table(tidy.summary,file="tidysummary.txt",row.names = FALSE)
+ 
+#create code book with feature names
+write.table(colnames(tidy.summary),file='tidyfeatures.txt',row.names=F,col.names=F)
