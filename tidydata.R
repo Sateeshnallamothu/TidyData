@@ -35,6 +35,7 @@ master.data <- rbind(tstx.final,trnx.final)
 # quick check
 table(master.data$Subject)
 table(master.data$Activity)
+table(master.data$Subject,master.data$Activity)
 
 # add meaningful names to columns/features. 
 colnames(master.data)<-gsub('^t',"time",colnames(master.data))
