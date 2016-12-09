@@ -41,6 +41,12 @@ colnames(master.data)<-gsub('^t',"time",colnames(master.data))
 colnames(master.data)<-gsub('\\(t',"(time",colnames(master.data))
 colnames(master.data)<-gsub('^f',"frequency",colnames(master.data))
 
+# write master data to a file.
+write.table(master.data,file="tidymaster.txt",row.names = FALSE)
+
+#create master code book with feature names
+write.table(colnames(master.data),file='masterfeatures.txt',row.names=F,col.names=F)
+
 # find mean of all features by Activity and by Suject. 
 tidy.summary<-master.data %>%
   group_by(Activity,Subject) %>%
@@ -49,7 +55,7 @@ tidy.summary<-master.data %>%
 #print
 tidy.summary
 
-# write to a file.
+# write summary to a file.
 write.table(tidy.summary,file="tidysummary.txt",row.names = FALSE)
  
 #create code book with feature names
