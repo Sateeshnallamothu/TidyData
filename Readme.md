@@ -1,5 +1,5 @@
 # Tidy script and data files
-## `tidydata.R` Script flow
+## `run_analysis.R` Script flow
 ### The script will first load the necessary 'data.table' package and sets the directory to working path. After that, it will read common files (like features and subject vector), test and training data sets along with subject and activity labels. 
 ### The next step is to select the necessary columns (i.e. columns with mean() and std()) from both test and training data sets. Using data.table functions, we next need to add the activity description and subject numbers to the test and training datasets. 
 ### Row merge the two datasets using 'rbind' to produce a combined master tidy data. In order to specify the unit of measurement, replace 't' with time(in Sec) and 'f' with frequency (in Hz).
